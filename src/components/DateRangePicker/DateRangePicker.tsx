@@ -120,10 +120,28 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
     while (currentDay.isBefore(endOfCalendar) || currentDay.isSame(endOfCalendar, 'day')) {
       const isCurrentMonth = currentDay.month() === currentDate.month();
-      const isSelected = startDate && endDate && 
-        currentDay.isBetween(startDate, endDate, 'day', '[]');
-      const isStart = startDate && currentDay.isSame(startDate, 'day');
-      const isEnd = endDate && currentDay.isSame(endDate, 'day');
+      
+      // 根据 rangeType 判断选中状态
+      let isSelected = false;
+      let isStart = false;
+      let isEnd = false;
+      
+      if (startDate && endDate) {
+        if (rangeType === 'week') {
+          // 周选择：判断当前日期是否在选中的周范围内
+          const weekStart = currentDay.startOf('week');
+          const weekEnd = currentDay.endOf('week');
+          isSelected = weekStart.isSame(startDate, 'day') || weekEnd.isSame(endDate, 'day') ||
+                      (weekStart.isAfter(startDate, 'day') && weekEnd.isBefore(endDate, 'day'));
+          isStart = weekStart.isSame(startDate, 'day');
+          isEnd = weekEnd.isSame(endDate, 'day');
+        } else {
+          // 日选择：判断当前日期是否在选中范围内
+          isSelected = currentDay.isBetween(startDate, endDate, 'day', '[]');
+          isStart = currentDay.isSame(startDate, 'day');
+          isEnd = currentDay.isSame(endDate, 'day');
+        }
+      }
 
       // 创建本地日期对象，避免时区问题
       const localDay = dayjs(currentDay.format('YYYY-MM-DD'));
