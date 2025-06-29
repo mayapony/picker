@@ -126,20 +126,34 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       let isStart = false;
       let isEnd = false;
       
-      if (startDate && endDate) {
+      if (startDate) {
         if (rangeType === 'week') {
           // 周选择：判断当前日期是否在选中的周范围内
           const weekStart = currentDay.startOf('week');
           const weekEnd = currentDay.endOf('week');
-          isSelected = weekStart.isSame(startDate, 'day') || weekEnd.isSame(endDate, 'day') ||
-                      (weekStart.isAfter(startDate, 'day') && weekEnd.isBefore(endDate, 'day'));
-          isStart = weekStart.isSame(startDate, 'day');
-          isEnd = weekEnd.isSame(endDate, 'day');
+          
+          if (endDate) {
+            // 有结束日期时，判断是否在范围内
+            isSelected = weekStart.isSame(startDate, 'day') || weekEnd.isSame(endDate, 'day') ||
+                        (weekStart.isAfter(startDate, 'day') && weekEnd.isBefore(endDate, 'day'));
+            isStart = weekStart.isSame(startDate, 'day');
+            isEnd = weekEnd.isSame(endDate, 'day');
+          } else {
+            // 只有开始日期时，高亮当前选中的周
+            isSelected = weekStart.isSame(startDate, 'day');
+            isStart = weekStart.isSame(startDate, 'day');
+          }
         } else {
           // 日选择：判断当前日期是否在选中范围内
-          isSelected = currentDay.isBetween(startDate, endDate, 'day', '[]');
-          isStart = currentDay.isSame(startDate, 'day');
-          isEnd = currentDay.isSame(endDate, 'day');
+          if (endDate) {
+            isSelected = currentDay.isBetween(startDate, endDate, 'day', '[]');
+            isStart = currentDay.isSame(startDate, 'day');
+            isEnd = currentDay.isSame(endDate, 'day');
+          } else {
+            // 只有开始日期时，高亮当前选中的日期
+            isSelected = currentDay.isSame(startDate, 'day');
+            isStart = currentDay.isSame(startDate, 'day');
+          }
         }
       }
 
