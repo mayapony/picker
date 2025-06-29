@@ -50,42 +50,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     }
   };
 
-  // 获取范围开始日期
-  const getRangeStart = (date: dayjs.Dayjs): dayjs.Dayjs => {
-    switch (rangeType) {
-      case 'day':
-        return date.startOf('day');
-      case 'week':
-        return date.startOf('week');
-      case 'month':
-        return date.startOf('month');
-      case 'quarter':
-        return date.startOf('quarter');
-      case 'year':
-        return date.startOf('year');
-      default:
-        return date.startOf('day');
-    }
-  };
-
-  // 获取范围结束日期
-  const getRangeEnd = (date: dayjs.Dayjs): dayjs.Dayjs => {
-    switch (rangeType) {
-      case 'day':
-        return date.endOf('day');
-      case 'week':
-        return date.endOf('week');
-      case 'month':
-        return date.endOf('month');
-      case 'quarter':
-        return date.endOf('quarter');
-      case 'year':
-        return date.endOf('year');
-      default:
-        return date.endOf('day');
-    }
-  };
-
   // 处理按钮型选择（如月、季度、年）
   const handleButtonSelect = (date: dayjs.Dayjs) => {
     if (!startDate || (startDate && endDate)) {
@@ -97,6 +61,35 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         setStartDate(date);
       } else {
         setEndDate(date);
+      }
+    }
+  };
+
+  // 处理日期选择（日/周）
+  const handleDateSelect = (date: dayjs.Dayjs) => {
+    console.log('原始日期:', date.toString())
+    console.log('格式化日期:', date.format('YYYY-MM-DD'))
+    
+    // 确保使用本地时间，不受时区影响
+    const localDate = dayjs(date.format('YYYY-MM-DD'));
+    console.log('本地日期:', localDate.toString())
+    
+    if (!startDate || (startDate && endDate)) {
+      // 开始新的选择
+      const rangeStart = rangeType === 'week' ? localDate.startOf('week') : localDate.startOf('day');
+      setStartDate(rangeStart);
+      setEndDate(null);
+    } else {
+      // 完成选择
+      const rangeEnd = rangeType === 'week' ? localDate.endOf('week') : localDate.endOf('day');
+      const rangeStart = startDate;
+      
+      // 确保开始日期在结束日期之前
+      if (rangeStart.isAfter(rangeEnd)) {
+        setStartDate(rangeEnd);
+        setEndDate(rangeStart);
+      } else {
+        setEndDate(rangeEnd);
       }
     }
   };
@@ -132,6 +125,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       const isStart = startDate && currentDay.isSame(startDate, 'day');
       const isEnd = endDate && currentDay.isSame(endDate, 'day');
 
+      // 创建本地日期对象，避免时区问题
+      const localDay = dayjs(currentDay.format('YYYY-MM-DD'));
+
       days.push(
         <div
           key={currentDay.format('YYYY-MM-DD')}
@@ -144,7 +140,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           } ${
             isEnd ? 'date-range-picker__day--end' : ''
           }`}
-          onClick={() => handleButtonSelect(currentDay)}
+          onClick={() => handleDateSelect(localDay)}
         >
           {currentDay.date()}
         </div>
