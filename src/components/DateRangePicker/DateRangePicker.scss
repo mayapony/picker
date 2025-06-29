@@ -1,0 +1,240 @@
+.date-range-picker {
+  width: 100%;
+  max-width: 360px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 12px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.date-range-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.date-range-picker__nav-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  padding: 4px 12px;
+  cursor: pointer;
+  color: #333;
+}
+
+.date-range-picker__title {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+}
+
+.date-range-picker__weekdays {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.date-range-picker__weekday {
+  flex: 1;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+}
+
+.date-range-picker__calendar {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 240px;
+}
+
+.date-range-picker__day {
+  width: 14.285%;
+  aspect-ratio: 1/1;
+  text-align: center;
+  line-height: 2.2;
+  border-radius: 50%;
+  margin: 2px 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+  font-size: 15px;
+}
+
+.date-range-picker__day--other-month {
+  color: #ccc;
+  background: #f7f7f7;
+  cursor: default;
+}
+
+.date-range-picker__day--selected {
+  background: #e0f3ff;
+  color: #1976d2;
+}
+
+.date-range-picker__day--start,
+.date-range-picker__day--end {
+  background: #1976d2;
+  color: #fff;
+}
+
+.date-range-picker__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.date-range-picker__action-btn {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.date-range-picker__action-btn--reset {
+  color: #d32f2f;
+}
+
+.date-range-picker__selected-range {
+  font-size: 13px;
+  color: #1976d2;
+  margin-left: 8px;
+}
+
+// 月选择网格
+.date-range-picker__month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.date-range-picker__month-btn {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.date-range-picker__month-btn:hover {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.date-range-picker__month-btn.selected {
+  background: #e0f3ff;
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.date-range-picker__month-btn.start,
+.date-range-picker__month-btn.end {
+  background: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+}
+
+// 季度选择网格
+.date-range-picker__quarter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.date-range-picker__quarter-btn {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.date-range-picker__quarter-btn:hover {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.date-range-picker__quarter-btn.selected {
+  background: #e0f3ff;
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.date-range-picker__quarter-btn.start,
+.date-range-picker__quarter-btn.end {
+  background: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+}
+
+// 年选择网格
+.date-range-picker__year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.date-range-picker__year-btn {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.date-range-picker__year-btn:hover {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.date-range-picker__year-btn.selected {
+  background: #e0f3ff;
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.date-range-picker__year-btn.start,
+.date-range-picker__year-btn.end {
+  background: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .date-range-picker {
+    max-width: 100vw;
+    padding: 6px;
+    font-size: 15px;
+  }
+  .date-range-picker__calendar {
+    min-height: 180px;
+  }
+  .date-range-picker__month-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .date-range-picker__quarter-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .date-range-picker__year-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+} 
