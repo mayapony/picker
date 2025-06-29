@@ -181,7 +181,15 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
   // 渲染季度选择
   const renderQuarterGrid = () => {
-    const quarters = [1, 2, 3, 4].map(q => currentDate.quarter(q));
+    // 确保只显示当前年份的4个季度
+    const currentYear = currentDate.year();
+    const quarters = [1, 2, 3, 4].map(q => {
+      // 使用 dayjs 的 quarter API 正确设置季度
+      return dayjs().year(currentYear).quarter(q);
+    });
+    
+    console.log({quarters})
+    
     return (
       <div className="date-range-picker__quarter-grid">
         {quarters.map(q => {
@@ -195,11 +203,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           const isEnd = endDate && qEnd.isSame(endDate, 'quarter');
           return (
             <button
-              key={q.format('YYYY-Q')}
+              key={`${q.year()}-Q${q.quarter()}`}
               className={`date-range-picker__quarter-btn ${isSelected ? 'selected' : ''} ${isStart ? 'start' : ''} ${isEnd ? 'end' : ''}`}
               onClick={() => handleButtonSelect(q)}
             >
-              {q.format('Q[季度]')}
+              Q{q.quarter()}季度
             </button>
           );
         })}
