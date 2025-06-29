@@ -108,10 +108,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setSelectedRange(null);
   };
 
-  // 渲染日历网格
-  const renderCalendarGrid = () => {
-    const startOfMonth = currentDate.startOf('month');
-    const endOfMonth = currentDate.endOf('month');
+  // 渲染单个月份的简化日历
+  const renderMonthCalendar = (monthDate: dayjs.Dayjs) => {
+    const startOfMonth = monthDate.startOf('month');
+    const endOfMonth = monthDate.endOf('month');
     const startOfCalendar = startOfMonth.startOf('week');
     const endOfCalendar = endOfMonth.endOf('week');
     
@@ -119,7 +119,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     let currentDay = startOfCalendar;
 
     while (currentDay.isBefore(endOfCalendar) || currentDay.isSame(endOfCalendar, 'day')) {
-      const isCurrentMonth = currentDay.month() === currentDate.month();
+      const isCurrentMonth = currentDay.month() === monthDate.month();
       
       // 根据 rangeType 判断选中状态
       let isSelected = false;
@@ -272,28 +272,21 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       <div className="date-range-picker__header">
         <button 
           className="date-range-picker__nav-btn" 
-          onClick={() => setCurrentDate(currentDate.subtract(1, 
-            rangeType === 'year' ? 'year' : 
-            rangeType === 'month' || rangeType === 'quarter' ? 'year' : 'month'
-          ))}
+          onClick={() => setCurrentDate(currentDate.subtract(1, 'year'))}
         >
           ‹
         </button>
         <div className="date-range-picker__title">
-          {rangeType === 'year' ? `${currentDate.year()}年` : 
-           rangeType === 'month' || rangeType === 'quarter' ? `${currentDate.year()}年` :
-           `${currentDate.format('YYYY年MM月')}`}
+          {currentDate.year()}年
         </div>
         <button 
           className="date-range-picker__nav-btn" 
-          onClick={() => setCurrentDate(currentDate.add(1, 
-            rangeType === 'year' ? 'year' : 
-            rangeType === 'month' || rangeType === 'quarter' ? 'year' : 'month'
-          ))}
+          onClick={() => setCurrentDate(currentDate.add(1, 'year'))}
         >
           ›
         </button>
       </div>
+      
       {rangeType === 'day' || rangeType === 'week' ? (
         <>
           <div className="date-range-picker__weekdays">
@@ -301,20 +294,28 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               <div key={day} className="date-range-picker__weekday">{day}</div>
             ))}
           </div>
-          <div className="date-range-picker__calendar">{renderCalendarGrid()}</div>
+          
+          <div className="date-range-picker__months-grid">
+            {Array.from({ length: 12 }, (_, monthIndex) => {
+              const monthDate = currentDate.month(monthIndex);
+              return (
+                <div key={monthIndex} className="date-range-picker__month-section">
+                  <div className="date-range-picker__month-title">
+                    {monthDate.format('YYYY年M月')}
+                  </div>
+                  <div className="date-range-picker__month-calendar">
+                    {renderMonthCalendar(monthDate)}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </>
       ) : null}
+      
       {rangeType === 'month' && renderMonthGrid()}
       {rangeType === 'quarter' && renderQuarterGrid()}
       {rangeType === 'year' && renderYearGrid()}
-      <div className="date-range-picker__actions">
-        <button className="date-range-picker__action-btn date-range-picker__action-btn--reset" onClick={handleReset}>重置</button>
-        {selectedRange && (
-          <div className="date-range-picker__selected-range">
-            已选择: {selectedRange[0]} 至 {selectedRange[1]}
-          </div>
-        )}
-      </div>
     </div>
   );
 };

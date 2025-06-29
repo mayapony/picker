@@ -32,10 +32,25 @@ function App() {
           </button>
         ))}
       </div>
-      <DateRangePicker
-        rangeType={rangeType}
-        onChange={setRange}
-      />
+      
+      {/* 模拟高度不够的容器 */}
+      <div style={{ 
+        height: '400px', 
+        border: '2px solid #e0e0e0', 
+        borderRadius: '8px',
+        padding: '16px',
+        marginBottom: '16px',
+        background: '#f9f9f9'
+      }}>
+        <div style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>
+          模拟容器高度限制 (400px)
+        </div>
+        <DateRangePicker
+          rangeType={rangeType}
+          onChange={setRange}
+        />
+      </div>
+      
       <div style={{ marginTop: 16, fontSize: 15 }}>
         <b>当前选择：</b>
         {range ? `${range[0]} 至 ${range[1]}` : '未选择'}
