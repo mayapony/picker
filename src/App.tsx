@@ -40,15 +40,24 @@ function App() {
         borderRadius: '8px',
         padding: '16px',
         marginBottom: '16px',
-        background: '#f9f9f9'
+        background: '#f9f9f9',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
-        <div style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>
+        <div style={{ 
+          fontSize: '14px', 
+          color: '#666',
+          flexShrink: 0,
+          marginBottom: '8px'
+        }}>
           模拟容器高度限制 (400px)
         </div>
-        <DateRangePicker
-          rangeType={rangeType}
-          onChange={setRange}
-        />
+        <div style={{ flex: 1, minHeight: 0 }}>
+          <DateRangePicker
+            rangeType={rangeType}
+            onChange={setRange}
+          />
+        </div>
       </div>
       
       <div style={{ marginTop: 16, fontSize: 15 }}>

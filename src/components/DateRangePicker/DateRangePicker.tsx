@@ -316,6 +316,15 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       {rangeType === 'month' && renderMonthGrid()}
       {rangeType === 'quarter' && renderQuarterGrid()}
       {rangeType === 'year' && renderYearGrid()}
+      
+      <div className="date-range-picker__actions">
+        <button className="date-range-picker__action-btn date-range-picker__action-btn--reset" onClick={handleReset}>重置</button>
+        {selectedRange && (
+          <div className="date-range-picker__selected-range">
+            已选择: {selectedRange[0]} 至 {selectedRange[1]}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
